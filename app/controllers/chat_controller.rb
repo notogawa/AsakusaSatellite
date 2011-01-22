@@ -1,4 +1,5 @@
 class ChatController < ApplicationController
+  include ChatHelper
   def tweet
     @tweets = Tweet.all
   end
@@ -24,11 +25,7 @@ class ChatController < ApplicationController
 
   def message
     if request.post?
-      room = Room.find(params[:room_id])
-      @message = Message.new(:room => room, :body => params[:message], :user => User.current)
-      unless @message.save
-        # TODO: error handling
-      end
+      create_message(params[:room_id], params[:message])
     end
     redirect_to :action => 'room', :id => params[:room_id]
   end
