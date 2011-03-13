@@ -4,6 +4,7 @@ class CreateRooms < ActiveGroonga::Migration
       table.short_text(:title)
       table.reference(:user, "users")
       table.boolean(:deleted)
+      table.string(:yaml)
       table.timestamps
     end
   end
