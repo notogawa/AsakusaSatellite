@@ -2,6 +2,7 @@ module Api
   module V1
     class RoomController < ApplicationController
       include ChatHelper
+      include UserHelper
 
       before_filter :check_spell, :only => [:create, :update, :destroy]
 
@@ -78,20 +79,6 @@ module Api
         #respond_with(rooms.map{|r| to_json(r) })
         render :json => rooms.map {|r| r.to_json }
       end
-
-      private
-      def check_spell
-        if params[:api_key]
-          users = User.select do |record|
-            record.spell == params[:api_key]
-          end
-          if users and users.first
-            session[:current_user_id] = users.first.id
-          end
-        end
-      end
-
-
     end
   end
 end
