@@ -3,10 +3,9 @@ module Api
     class RoomController < ApplicationController
       include ChatHelper
       include UserHelper
-
       before_filter :check_spell, :only => [:create, :update, :destroy]
-
       respond_to :json
+
       def show
         count = if params[:count] then
                   params[:count].to_i
