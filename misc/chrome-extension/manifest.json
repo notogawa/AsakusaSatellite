@@ -1,16 +1,14 @@
 {
-  "name": "AsakusaSatellite Extension",
-  "version": "0.1",
-  "icons": {
-    "128": "icon.png"
-  },
-  "app": {
-     // domain name without port number
-    "urls": [ "*://localhost/" ],
-    "launch": {
-         // top page url
-	"web_url": "http://localhost:3000/"
-    }
-  },
-  "permissions": ["background", "notifications"]
+    "name": "AsakusaSatellite Extension",
+    "version": "0.1",
+    "icons": {
+	"128": "icon.png"
+    },
+    "options_page": "options.html",
+    "background_page": "background.html",
+    "permissions": [
+        "notifications",
+        "http://*/",
+        "https://*/"
+    ]
 }
