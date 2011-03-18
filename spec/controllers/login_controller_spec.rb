@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe LoginController do
@@ -11,6 +12,12 @@ describe LoginController do
   end
 
   it "oauth にアクセスするとリダイレクトされる" do
+    consumer = stub("consumer")
+    consumer.stub!(:get_request_token).and_return do
+      OpenStruct.new(:token => "", :secret => "",:authorize_url=>'example.com')
+    end
+    LoginController.stub!(:consumer).and_return(consumer)
+
     post :oauth
     response.should be_redirect
   end

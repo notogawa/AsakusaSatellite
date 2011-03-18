@@ -26,14 +26,15 @@ describe Message do
 
   it "Hashに変換できる" do
     @message.to_hash.should == {
-        "name" => @message.user.name,
-        "created_at" => I18n.l(@message.created_at),
-        "profile_image_url" => @message.user.profile_image_url,
-        "html_body" => @message.body,
-        "body" => @message.body,
-        "attachment" => nil,
-        "id" => @message.id,
-        "screen_name" => @message.user.screen_name
+      "name" => @message.user.name,
+      "created_at" => I18n.l(@message.created_at),
+      "profile_image_url" => @message.user.profile_image_url,
+      "html_body" => @message.body,
+      "body" => @message.body,
+      "attachment" => nil,
+      "id" => @message.id,
+      "screen_name" => @message.user.screen_name,
+      "watchers" => []
     }
   end
 end

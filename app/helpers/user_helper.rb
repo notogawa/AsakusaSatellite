@@ -1,3 +1,4 @@
+# -*- coding: undecided -*-
 module UserHelper
   def check_spell
     if params[:api_key]
@@ -7,10 +8,10 @@ module UserHelper
       if users and users.first
         session[:current_user_id] = users.first.id
       else
-        render :file=>"#{Rails.root}/public/403.html", :status=>'403 Forbidden'
+        render :json => {:status => 'error'}
       end
     else
-      render :file=>"#{Rails.root}/public/403.html", :status=>'403 Forbidden'
+      render :json => {:status => 'error'}
     end
   end
 end

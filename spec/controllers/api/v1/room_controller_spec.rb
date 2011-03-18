@@ -34,6 +34,12 @@ describe Api::V1::RoomController do
       get :show, :id => @room.id, :until_id => @m2.id, :count => 1 , :format => 'json'
       assigns[:messages].size.should == 1
     end
+
+    it "since_idをわたせば、それ以前のメッセージが取得できる" do
+      get :show, :id => @room.id, :since_id => @m2.id , :format => 'json'
+      assigns[:messages].size.should == 1
+      assigns[:messages].should == [ @m3 ]
+    end
   end
 
   describe "部屋一覧取得API" do

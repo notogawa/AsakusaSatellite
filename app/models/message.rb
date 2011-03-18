@@ -14,7 +14,7 @@ class Message < ActiveGroonga::Base
       'profile_image_url' => (self.user ? self.user.profile_image_url : ''),
       'created_at' => I18n.l(self.created_at),
       'attachment' => self.attachment && self.attachment.to_hash,
-      'watchers' => self.room.members.map{|user| user.to_json }
+      'watchers' => (self.room.members rescue []).map{|user| user.to_json }
     }
   end
 

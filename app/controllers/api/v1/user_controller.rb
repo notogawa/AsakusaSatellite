@@ -10,7 +10,7 @@ module Api
       def rooms
         @rooms = current_user.rooms
         render :json => {
-          :rooms => @rooms
+          :rooms => @rooms.map{|room| room.to_json }
         }
       end
     end
