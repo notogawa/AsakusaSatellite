@@ -12,10 +12,14 @@ module Api
                 else
                   20
                 end
-        if params[:until_id] then
+        case
+        when params[:until_id]
           message = Message.find params[:until_id]
           @messages = message.prev(count-1)
           @messages << message
+        when params[:since_id]
+          message = Message.find params[:since_id]
+          @messages = message.next(count)
         else
           room = Room.find(params[:id])
           @messages = room.messages(count)
