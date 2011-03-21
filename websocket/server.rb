@@ -13,11 +13,12 @@ require 'client_side'
 require 'rails_side'
 
 class MyRoutes < AsakusaSatellite::Routes
-  source :message_create, :message_update, :message_delete
+  source :message_create, :message_update, :message_delete, :member_change
   map :room do|params|
     message_create.merge(:create,
-                         :update => message_update,
-                         :delete => message_delete).filter{|_,room,content|
+                         :update  => message_update,
+                         :delete  => message_delete,
+                         :members => member_change).filter{|_,room,_|
       params[:id].to_i == room
     }.map{|event, _, content|
       { 'event' => event.to_s, 'content' => content }

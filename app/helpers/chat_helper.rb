@@ -43,20 +43,29 @@ module ChatHelper
   end
 
   private
-  def publish_message(event, message)
-    @client = MessagePack::RPC::Client.new('127.0.0.1', WebsocketConfig.msgpackPort)
-
-
+  def async(&f)
     Thread.start do
       begin
-        if event == :delete then
-          @client.call("message_#{event}".to_sym, message.room.id, message.id)
-        else
-          @client.call("message_#{event}".to_sym, message.room.id, to_json(message))
-        end
+        f[]
       rescue => e
         puts e
       end
     end
+  end
+
+  def publish_message(event, message)
+    @client = MessagePack::RPC::Client.new('127.0.0.1', WebsocketConfig.msgpackPort)
+
+    async {
+      @client.call(:member_change, message.room.id, message.room.members.map{|u| u.to_json })
+    }
+
+    async {
+      if event == :delete then
+        @client.call("message_#{event}".to_sym, message.room.id, message.id)
+      else
+        @client.call("message_#{event}".to_sym, message.room.id, to_json(message))
+      end
+    }
   end
 end

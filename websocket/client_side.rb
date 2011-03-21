@@ -25,8 +25,11 @@ class ClientSide
         @logger.info "on open: #{ws.request.inspect}"
         dispatch(ws.request['Path'])do|event|
           @clients[ws] = event.listen do|hash|
-            @logger.info "send #{hash.inspect}"
-            ws.send hash.to_json
+
+            Thread.start {
+              @logger.info "send #{hash.inspect}"
+              ws.send hash.to_json
+            }
           end
         end
       end

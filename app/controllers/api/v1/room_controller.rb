@@ -3,8 +3,8 @@ module Api
     class RoomController < ApplicationController
       include ChatHelper
       include ApiHelper
-
-      before_filter :check_spell, :except => [:list]
+      include RoomHelper
+      before_filter :check_spell, :except => [:list, :members]
 
       respond_to :json
       def create
@@ -38,6 +38,12 @@ module Api
           render :json => {:status => 'ok'}
         else
           render :json => {:status => 'error', :error => "room deletion failure"}
+        end
+      end
+
+      def members
+        find_room(params[:id], :not_auth => true) do
+          render :json => @room.members.map{|u| u.to_json }
         end
       end
 

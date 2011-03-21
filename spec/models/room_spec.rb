@@ -53,10 +53,16 @@ describe Room do
     end
   end
 
-  before {
-    @user = User.new
+  before do
+    @user = User.new{|u| u.save!}
+    @alice = User.new{|u| u.save!}
+    @bob = User.new{|u| u.save!}
     @room = Room.new(:title => 'room1', :user => @user, :updated_at => Time.now)
-  }
+
+    Message.new(:body => "dummy", :user => @alice, :room => @room).save!
+    Message.new(:body => "dummy", :user => @alice, :room => @room).save!
+  end
+
   describe "to_json" do
     subject { @room.to_json }
     its([:name]) { should == "room1" }
@@ -69,5 +75,11 @@ describe Room do
     subject { @room.yaml }
     its(['foo']) { should == 'baz' }
     it{ should have(1).items }
+  end
+
+  describe "member" do
+    subject { @room.members }
+    it { should have(2).records }
+    its(:to_a) { should == [ @user, @alice ] }
   end
 end

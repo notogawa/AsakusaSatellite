@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../../../spec_helper'
 describe Api::V1::RoomController do
   before do
     User.select.each { |r| r.delete }
-    @user = User.new(:spell => 'spell')
+    @user = User.new(:name => 'asakusa', :spell => 'spell')
     @user.save
     @room = Room.new(:title => 'title', :user => @user)
     @room.save
@@ -20,7 +20,6 @@ describe Api::V1::RoomController do
     subject { response.body }
     it { should have_json("/status[text() = 'error']") }
   end
-
 
   describe "部屋作成" do
     describe "response" do
@@ -47,6 +46,14 @@ describe Api::V1::RoomController do
     its(:title) { should == 'new_name' }
   end
 
+  describe "メンバの取得" do
+    before {
+      get :members, :id => @room.id, :format => 'json'
+    }
+    subject { response.body }
+    it { should have_json("/name[text() = '#{@user.name}']") }
+  end
+
   describe "部屋の削除" do
     before {
       post :destroy, :id => @room.id, :api_key => @user.spell, :format => 'json'
@@ -58,7 +65,7 @@ describe Api::V1::RoomController do
 
   describe "部屋の一覧" do
     before {
-      post :list, :format => 'json'
+      get :list, :format => 'json'
     }
     subject { response.body }
     it { should have_json("/name[text() = '#{@room.title}']") }

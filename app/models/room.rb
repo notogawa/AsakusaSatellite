@@ -12,6 +12,12 @@ class Room < ActiveGroonga::Base
       reverse
   end
 
+  def members
+    users = Message.select {|record| record.room == self.id }.
+      map{|record| record.user }
+    uniq_by([ self.user ] + users){|u| u.id }
+  end
+
   def to_json
     {
       :id => self.id,
@@ -32,5 +38,10 @@ class Room < ActiveGroonga::Base
 
   def validate(options = {})
     (not self.title.blank?) and super(options)
+  end
+
+  private
+  def uniq_by(xs)
+    h = {}; xs.inject([]) {|a,x| h[yield(x)] ||= a << x}
   end
 end

@@ -18,7 +18,7 @@
 	ws.onmessage = function(text){
 	    var message = jQuery.parseJSON(text.data);
 	    var obj = message.content;
-	    fire('websocket::' + message.event, obj);
+	    fire('websocket::' + message.event, [ obj ]);
 	}
 	ws.onerror = function(msg){
 	    fire('websocket::error', msg);

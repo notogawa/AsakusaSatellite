@@ -4,6 +4,10 @@
  %audio{:src => "#{root_path}audio/sound.mp3", :id => :audio}
 .yield
  = render :partial => "shared/room_info", :locals => { :room => @room, :has_button => true }
+ %div.members
+  - @room.members.each do|user|
+   %div.user
+    %img{:src=> user.profile_image_url }=user.name
  %div{:id => 'read-more', :class => 'read-more' }
   read more
  .message-list
@@ -23,6 +27,7 @@
  = javascript_include_tag "jquery.append-hack"
  = javascript_include_tag "jquery.autoscroll"
  = javascript_include_tag "jquery.watch"
+ = javascript_include_tag "jquery.members"
  = javascript_include_tag :on_the_spot
  = javascript_include_tag 'jquery.dropUploader'
  = javascript_include_tag "jquery.multiline"

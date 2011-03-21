@@ -45,6 +45,7 @@ $(function() {
 	.notify({
 	    current_user : AsakusaSatellite.current.user
 	})
+	.members($('.members'))
 	.bind({
 	    'websokcet::create' : function(){
 		document.getElementById("audio").load();

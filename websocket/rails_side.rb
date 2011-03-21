@@ -24,6 +24,11 @@ class RailsSide
     @routes.message_delete.fire room, { 'id' => id }
   end
 
+  def member_change(room, members)
+    @logger.info [room, members].inspect
+    @routes.member_change.fire room, members
+  end
+
   def run
     @logger.info "MessagePack server start"
     server = MessagePack::RPC::Server.new
